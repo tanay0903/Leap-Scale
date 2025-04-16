@@ -1,0 +1,28 @@
+{
+
+    "mfg": "L&PIndustries PVT LTD",
+    "deviceList": [
+        {
+            "devId": "T_U1",
+            "deviceType": "T10",
+            "mode": "Auto",
+            "timestamp": 1742795226000,
+            "createdTime": 1742795226000,
+            "status": "Okay",
+            "measurements": [
+                {
+                    "paramName": "Temperature",
+                    "value": 56,
+                    "multiplier": 1,
+                    "unit": "Celsius"
+                },
+                {
+                    "paramName": "Humadity",
+                    "value": 56,
+                    "multiplier": 1,
+                    "unit": "percentage"
+                }
+            ]
+        }
+    ]
+}

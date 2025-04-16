@@ -1,0 +1,15 @@
+{
+    "mfg": ["manufacture", "mgf", "production", "manf", "man","manu", "maker", "prod_maker"],
+    "deviceList": ["devices", "devList", "list", "dev_list","d_list", "devices", "dev_arr"],
+    "deviceId": ["sensorId", "id", "d_id", "device_id", "sensor","deviceID", "uid"],
+    "deviceType" : ["type", "dType", "device_tp", "d_t", "devType"],
+    "mode": ["mode", "Mode", "mo", "md", "operationMode", "functionMode","opMode"],
+    "timestamp": ["time", "ts", "utc", "utcTime", "rfc","epoch"],
+    "createdTime": ["create", "created", "created_at", "creationTime", "generatedTime"],
+    "status": ["state", "deviceStatus", "currentState", "device_state","state_dev", "devState"],
+    "measurements": ["measures", "sensorData", "readings", "metrics", "observations","meas"],
+    "paramName": ["parameter", "param_name", "name", "attribute","name_para", "param", "parameter_name", "paramName", "param_name"],
+    "value": ["reading", "val", "data", "amount", "number","readValue"],
+    "multiplier": ["mult", "factor","scale", "multiplication_factor", "conversion"],
+    "unit": ["units", "paramUnit", "parameter_unit", "unit_name", "unitType","unit_para", "unitType", "uniType"]
+}

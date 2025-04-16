@@ -1,0 +1,81 @@
+BASIC raw data :
+{
+    "manu": "TAS Industries PVT LTD",
+    "d_list": [
+        {
+            "id": "T_U1",
+            "dType": "T10",
+            "md": "Auto",
+            "time": "1742795226",
+            "create_t": "1742795226",
+            "state_dev": "Okay",
+            "metric": [
+                {
+                "name_para": "temperature",
+                "readValue": "373.15",
+                "converter": 1,
+                "paramunit": "kelvin"
+                },
+                {
+                "name": "temperature",
+                "Value": "88",
+                "convert": 1,
+                "unit": "c"
+                }
+            ]
+        }
+    ]
+}
+
+RAW data Unordered:
+{
+    "lis": [
+        {
+            "uid": "T_U1",
+            "devt": "T10",
+            "md": "Auto",
+            "metric": [
+                {
+                    "readValue": "373.15",
+                    "paramunit": "kelvin",
+                    "name_para": "temperature",
+                    "converter": 1
+                },
+                {
+                    "Value": "88",
+                    "unit": "c",
+                    "name": "temperature",
+                    "convert": 1
+                }
+            ],
+            "state_dev": "Okay"
+        }
+    ],
+    "mgf": "TAS Industries PVT LTD",
+    "time": "1742795226",
+    "create_t": "1742795226"
+}
+
+
+
+ECE :
+     Received raw message:
+{
+        "device_info":  {
+                "manufacturer": "Interns Leap&Scale",
+                "device_id":    "IN03091228",
+                "device_type":  "IN_005"
+        },
+        "sensor_data":  [{
+                        "parameter_name":       "Temperature",
+                        "parameter_value":      31.899999618530273,
+                        "parameter_unit":       "Celsius"
+                }, {
+                        "parameter_name":       "Humidity",
+                        "parameter_value":      24.399999618530273,
+                        "parameter_unit":       "Percentage"
+                }],
+        "timestamp":    "1970-01-01 00:14:55"
+}
+JSON is valid.
+Error processing message: cannot access local variable 'normalized_data' where it is not associated with a value

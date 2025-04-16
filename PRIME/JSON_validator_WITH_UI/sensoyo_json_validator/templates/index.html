@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JSON Validator - Sensoyo</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Sensoyo JSON Validator</h1>
+
+    <label for="fileInput">📁 Upload JSON File:</label>
+    <input type="file" id="fileInput" accept=".json"/>
+
+    <label for="jsonInput">📝 Or Paste Your JSON Below:</label>
+    <textarea id="jsonInput" placeholder="Paste your JSON here..."></textarea>
+
+    <div class="buttons">
+      <button onclick="loadFile()">Load File</button>
+      <button onclick="validateJson()">Validate</button>
+      <button onclick="resetJson()">Reset</button>
+    </div>
+
+    <label for="result">✅ Validation Result:</label>
+    <pre id="result" class="placeholder">Output will display in this area...</pre>
+  </div>
+
+  <script>
+    function loadFile() {
+      const fileInput = document.getElementById("fileInput");
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById("jsonInput").value = reader.result;
+      };
+      if (fileInput.files.length > 0) {
+        reader.readAsText(fileInput.files[0]);
+      }
+    }
+
+    async function validateJson() {
+      const jsonInput = document.getElementById("jsonInput").value;
+      const resultBox = document.getElementById("result");
+      try {
+        const response = await fetch("http://127.0.0.1:5000/validate-json", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: jsonInput,
+        });
+        const result = await response.json();
+        resultBox.textContent = result.result || result.error;
+        resultBox.classList.remove("placeholder");
+      } catch (error) {
+        resultBox.textContent = "Error: " + error.message;
+        resultBox.classList.remove("placeholder");
+      }
+    }
+
+    function resetJson() {
+      document.getElementById("jsonInput").value = "";
+      const resultBox = document.getElementById("result");
+      resultBox.textContent = "Output will display in this area...";
+      resultBox.classList.add("placeholder");
+      document.getElementById("fileInput").value = null;
+    }
+  </script>
+</body>
+</html>

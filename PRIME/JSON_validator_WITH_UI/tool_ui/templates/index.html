@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSON Validator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, h1, label, button, textarea, pre, .card, input, .form-control {
+            font-family: 'Segoe UI', sans-serif;
+            color: #000;
+        }
+        body {
+            padding-bottom: 50px;
+        }
+        .wrapper-box {
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        textarea#jsonInput {
+            font-family: monospace;
+            text-align: left;
+        }
+        .CodeMirror {
+            font-family: monospace !important;
+            text-align: left !important;
+        }
+        .CodeMirror-activeline-background {
+            background-color: #f0f0f0 !important;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
+    <!-- <script src="../assests/active_line_min.js"></script> -->
+</head>
+<body class="bg-light">
+    <div class="container mt-5">
+        <div class="wrapper-box">
+            <h1 class="mb-4 text-center">🔍 Sensoyo JSON Validator</h1>
+
+            <div id="customAlert" class="alert alert-info text-center d-none" role="alert"></div>
+
+            <div class="mb-3 text-center">
+                <button class="btn btn-dark me-2" onclick="openFile()">📂 Open File</button>
+                <button class="btn btn-primary me-2" onclick="validateJSON()">Validate</button>
+                <button class="btn btn-success me-2" onclick="saveToFile()">💾 Save Changes</button>
+                <button class="btn btn-secondary me-2" onclick="resetForm()">Reset</button>
+                <button class="btn btn-warning me-2" onclick="downloadText()">Download Text</button>
+
+                <div class="mb-3 mt-3 d-none" id="fileDetailsWrapper">
+                    <label class="form-label text-start d-block">📄 File Details:</label>
+                    <div id="fileDetails" class="form-control bg-white text-black text-start" style="height: auto; white-space: pre-line;"></div>
+                </div>
+
+                <div class="mb-3 mt-3">
+                    <label for="jsonInput" class="form-label text-start d-block">📝 Edit or paste your JSON here:</label>
+                    <textarea class="form-control" id="jsonInput" rows="10" placeholder="Enter JSON here"></textarea>
+                </div>
+
+                <div class="card">
+                    <div class="card-header bg-dark text-white text-start">✅ Validation Result</div>
+                    <div class="card-body">
+                        <pre id="result" class="mb-0 text-wrap text-start">Your result will be displayed here !!!</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            let fileHandle = null;
+            let loadedFileContent = "";
+            let isValidated = false;
+
+            function showCustomAlert(message) {
+                const alertBox = document.getElementById("customAlert");
+                alertBox.textContent = message;
+                alertBox.classList.remove("d-none");
+                setTimeout(() => alertBox.classList.add("d-none"), 1500);
+            }
+
+            async function openFile() {
+                try {
+                    [fileHandle] = await window.showOpenFilePicker({
+                        types: [{
+                            description: 'JSON or Text Files',
+                            accept: { 'application/json': ['.json'], 'text/plain': ['.txt'] }
+                        }]
+                    });
+                    const file = await fileHandle.getFile();
+                    const contents = await file.text();
+                    loadedFileContent = contents.trim();
+                    editor.setValue(loadedFileContent);
+                    isManualInput = false;
+                    document.getElementById("result").innerText = "Your result will be displayed here !!!";
+                    const fileName = file.name;
+                    const fileSize = (file.size / 1024).toFixed(2) + ' KB';
+                    const lastModified = new Date(file.lastModified).toLocaleString();
+                    const detailsText = `📄 File Name: ${fileName}\n📏 File Size: ${fileSize}\n🕒 File Last Modified: ${lastModified}`;
+                    document.getElementById("fileDetails").innerText = detailsText;
+                    document.getElementById("fileDetailsWrapper").classList.remove("d-none");
+                    showCustomAlert("📂 File loaded successfully.");
+                } catch (err) {
+                    console.error("File open canceled or failed", err);
+                    showCustomAlert("⚠ Failed to open file.");
+                }
+            }
+
+            async function saveToFile() {
+                const jsonText = editor.getValue().trim();  
+                if (!fileHandle) {
+                    showCustomAlert("⚠ Please open a file first.");
+                    return;
+                }
+                if (jsonText === loadedFileContent) {
+                    showCustomAlert("⚠ No changes. Nothing to save.");
+                    return;
+                }
+                try {
+                    const writable = await fileHandle.createWritable();
+                    await writable.write(jsonText);
+                    await writable.close();
+                    loadedFileContent = jsonText;
+                    showCustomAlert("💾 Changes saved to file.");
+                } catch (e) {
+                    console.error("Save error:", e);
+                    showCustomAlert("❌ Save canceled. Changes were not saved.");
+                }
+            }
+
+            function validateJSON() {
+                let jsonText = editor.getValue().trim();
+                if (!jsonText) {
+                    document.getElementById("result").innerText = "Your result will be displayed here";
+                    showCustomAlert("⚠ Please provide JSON input to validate.");
+                    return;
+                }
+                try {
+                    const jsonData = JSON.parse(jsonText);
+                    console.log("Sending to backend:", jsonData);
+                    fetch("/validate", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(jsonData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        document.getElementById("result").innerText = data.result;
+                        isValidated = true;
+                        showCustomAlert("✅ Validation complete.");
+                    });
+                } catch (e) {
+                    console.error("JSON.parse error:", e);
+                    document.getElementById("result").innerText = "Invalid JSON format!";
+                    isValidated = true;
+                    showCustomAlert("⚠ Invalid JSON format!");
+                }
+            }
+
+            function resetForm() {
+                const jsonInput = editor.getValue().trim();  
+                const resultBox = document.getElementById("result");
+                const fileDetailsWrapper = document.getElementById("fileDetailsWrapper");
+                const fileDetails = document.getElementById("fileDetails");
+                const hasText = jsonInput !== "";
+                const hasResult = resultBox.innerText.trim() !== "Your result will be displayed here !!!";
+                const hasFileDetails = !fileDetailsWrapper.classList.contains("d-none");
+                if (hasText || hasResult || hasFileDetails) {
+                    editor.setValue(""); 
+                    resultBox.innerText = "Your result will be displayed here !!!";
+                    fileDetails.innerText = "";
+                    fileDetailsWrapper.classList.add("d-none");
+                    fileHandle = null;
+                    loadedFileContent = "";
+
+                    showCustomAlert("✅ All data has been reset.");
+                } else {
+                    showCustomAlert("⚠ Nothing to reset.");
+                }
+            }
+
+            function downloadText() {
+                const jsonText = editor.getValue().trim();
+                const resultText = document.getElementById("result").innerText.trim();
+                if (!jsonText) {
+                    showCustomAlert("⚠ No JSON input to download.");
+                    return;
+                }
+                if (!isValidated) {
+                    showCustomAlert("⚠ To download, first validate the text input.");
+                    return;
+                }
+                if (!resultText.toLowerCase().includes("json is valid")) {
+                    showCustomAlert("❌ Cannot download. JSON must be valid first.");
+                    return;
+                }
+                const format = prompt("Enter format: 'json' or 'txt'");
+                if (format === null) {
+                    showCustomAlert("⚠ Format not entered. Download canceled.");
+                    return;
+                }
+                const lowerFormat = format.toLowerCase();
+                if (lowerFormat !== "json" && lowerFormat !== "txt") {
+                    showCustomAlert("⚠ Invalid format. Use 'json' or 'txt'.");
+                    return;
+                }
+                const fileName = `sensoyo_output.${lowerFormat}`;
+                const blob = new Blob([jsonText], {
+                    type: lowerFormat === "json" ? "application/json" : "text/plain"
+                });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement("a");
+                a.href = url;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showCustomAlert(`✅ Downloaded as ${fileName}`);
+            }
+
+            const editor = CodeMirror.fromTextArea(document.getElementById("jsonInput"), {
+                lineNumbers: true,
+                mode: "application/json",
+                theme: "default",
+                styleActiveLine: true
+            });
+
+            let isManualInput = false;
+            editor.on("keydown", () => {
+                isManualInput = true;
+            });
+            editor.on("change", () => {
+                if (isManualInput && isValidated) {
+                    isValidated = false;
+                }
+            });
+        </script>
+</body>
+</html>
