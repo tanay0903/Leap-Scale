@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>JSON Validator</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
     <style>
         body, h1, label, button, textarea, pre, .card, input, .form-control {
             font-family: 'Segoe UI', sans-serif;
@@ -32,17 +33,29 @@
             background-color: #f0f0f0 !important;
         }
     </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script>
-    <!-- <script src="../assests/active_line_min.js"></script> -->
-</head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/selection/active-line.min.js"></script> -->
+    
+    
+    <!-- <link rel="stylesheet" href="../assets/codemirror.min.css">
+    <script src="../assets/codemirror.min.js"></script>
+    <script src="../assets/javascript.min.js"></script>
+    <script src="../assets/active_line_min.js"></script> -->
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='codemirror.min.css') }}">
+    <script src="{{ url_for('static', filename='codemirror.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='javascript.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='active-line.min.js') }}"></script>
+    </head>
 <body class="bg-light">
     <div class="container mt-5">
         <div class="wrapper-box">
-            <h1 class="mb-4 text-center">🔍 Sensoyo JSON Validator</h1>
+            <h1 class="mb-4 text-center">
+                <img src="{{ url_for('static', filename='images/SensoyoIO.png') }}" alt="Sensoyo Logo" style="height: 44px; vertical-align: middle; margin-right: 10px;">
+            </h1>
+            <h1 class="mb-4 text-center">Sensoyo JSON Validator</h1>
 
             <div id="customAlert" class="alert alert-info text-center d-none" role="alert"></div>
 
@@ -107,18 +120,18 @@
                     showCustomAlert("📂 File loaded successfully.");
                 } catch (err) {
                     console.error("File open canceled or failed", err);
-                    showCustomAlert("⚠ Failed to open file.");
+                    showCustomAlert("⚠️ Failed to open file.");
                 }
             }
 
             async function saveToFile() {
                 const jsonText = editor.getValue().trim();  
                 if (!fileHandle) {
-                    showCustomAlert("⚠ Please open a file first.");
+                    showCustomAlert("⚠️️ Please open a file first.");
                     return;
                 }
                 if (jsonText === loadedFileContent) {
-                    showCustomAlert("⚠ No changes. Nothing to save.");
+                    showCustomAlert("⚠️️ No changes. Nothing to save.");
                     return;
                 }
                 try {
@@ -137,7 +150,7 @@
                 let jsonText = editor.getValue().trim();
                 if (!jsonText) {
                     document.getElementById("result").innerText = "Your result will be displayed here";
-                    showCustomAlert("⚠ Please provide JSON input to validate.");
+                    showCustomAlert("⚠️ Please provide JSON input to validate.");
                     return;
                 }
                 try {
@@ -158,7 +171,7 @@
                     console.error("JSON.parse error:", e);
                     document.getElementById("result").innerText = "Invalid JSON format!";
                     isValidated = true;
-                    showCustomAlert("⚠ Invalid JSON format!");
+                    showCustomAlert("⚠️ Invalid JSON format!");
                 }
             }
 
@@ -180,7 +193,7 @@
 
                     showCustomAlert("✅ All data has been reset.");
                 } else {
-                    showCustomAlert("⚠ Nothing to reset.");
+                    showCustomAlert("⚠️ Nothing to reset.");
                 }
             }
 
@@ -188,11 +201,11 @@
                 const jsonText = editor.getValue().trim();
                 const resultText = document.getElementById("result").innerText.trim();
                 if (!jsonText) {
-                    showCustomAlert("⚠ No JSON input to download.");
+                    showCustomAlert("⚠️ No JSON input to download.");
                     return;
                 }
                 if (!isValidated) {
-                    showCustomAlert("⚠ To download, first validate the text input.");
+                    showCustomAlert("⚠️ To download, first validate the text input.");
                     return;
                 }
                 if (!resultText.toLowerCase().includes("json is valid")) {
@@ -201,12 +214,12 @@
                 }
                 const format = prompt("Enter format: 'json' or 'txt'");
                 if (format === null) {
-                    showCustomAlert("⚠ Format not entered. Download canceled.");
+                    showCustomAlert("⚠️ Format not entered. Download canceled.");
                     return;
                 }
                 const lowerFormat = format.toLowerCase();
                 if (lowerFormat !== "json" && lowerFormat !== "txt") {
-                    showCustomAlert("⚠ Invalid format. Use 'json' or 'txt'.");
+                    showCustomAlert("⚠️ Invalid format. Use 'json' or 'txt'.");
                     return;
                 }
                 const fileName = `sensoyo_output.${lowerFormat}`;
@@ -228,7 +241,8 @@
                 lineNumbers: true,
                 mode: "application/json",
                 theme: "default",
-                styleActiveLine: true
+                styleActiveLine: true,
+                theme: "default",
             });
 
             let isManualInput = false;
