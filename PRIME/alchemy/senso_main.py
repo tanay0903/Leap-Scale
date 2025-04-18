@@ -21,8 +21,8 @@ BROKERS = {
     "ronnyiot": "ronny.iotclay.net"
 }
 
-BROKER_CHOICE = os.getenv("MQTT_BROKER_CHOICE", "mosquitto")
-BROKER_HOST = BROKERS.get(BROKER_CHOICE, "test.mosquitto.org")
+BROKER_CHOICE = os.getenv("MQTT_BROKER_CHOICE", "sparrow")
+BROKER_HOST = BROKERS.get(BROKER_CHOICE, "sparrow.sensoyo.io")
 PORT = 1883
 USERNAME = os.getenv("MQTT_USERNAME", "ronnyiotMQTT")
 PASSWORD = os.getenv("MQTT_PASSWORD", "Iot@MQTT")
