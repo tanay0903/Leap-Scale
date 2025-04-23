@@ -46,8 +46,7 @@ def on_message(client, userdata, msg):
             # Send HTTP request
             response = requests.post(url, data=normalized_json, headers=headers)
             print(f"🌐 HTTP Response: {response.status_code}")
-            print(response.text)
-
+            print(f"{response.text}\n")
         else:
             print("❌ Data normalization failed.")
 

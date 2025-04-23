@@ -1,7 +1,7 @@
 import os
 import json
 import paho.mqtt.client as mqtt
-from senso_data_norm_ECE import senso_normalise_json
+from senso_data_sona import senso_normalise_json
 import requests
 from dotenv import load_dotenv
 import logging
@@ -24,8 +24,8 @@ BROKERS = {
 BROKER_CHOICE = os.getenv("MQTT_BROKER_CHOICE", "sparrow")
 BROKER_HOST = BROKERS.get(BROKER_CHOICE, "sparrow.sensoyo.io")
 PORT = 1883
-USERNAME = os.getenv("MQTT_USERNAME", "ronnyiotMQTT")
-PASSWORD = os.getenv("MQTT_PASSWORD", "Iot@MQTT")
+USERNAME = os.getenv("MQTT_USERNAME")
+PASSWORD = os.getenv("MQTT_PASSWORD")
 TOPIC = os.getenv("MQTT_TOPIC", "iot/sensor/data")
 
 # TARGET_URL = os.getenv("TARGET_URL", "https://ronny.iotclay.net/DataCollection/test")
