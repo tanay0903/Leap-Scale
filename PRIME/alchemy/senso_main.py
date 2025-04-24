@@ -1,7 +1,7 @@
 import os
 import json
 import paho.mqtt.client as mqtt
-from senso_data_sona import senso_normalise_json
+from senso_data_norm_main import senso_normalise_json
 import requests
 from dotenv import load_dotenv
 import logging
