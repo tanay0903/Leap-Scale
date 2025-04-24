@@ -137,16 +137,16 @@ def senso_normalise_json(input_json):
                 {
                     "deviceId": input_json.get("device_id", "unknown"),
                     "deviceType": input_json.get("device_type", "unknown"),
-                    "mode": input_json.get("mode", "unknown"),
+                    "mode": input_json.get("mode", "Auto"),
                     "timestamp": converted_timestamp,
                     "createdTime": converted_timestamp, 
-                    "status": input_json.get("status", "unknown"),
+                    "status": input_json.get("status", "Okay"),
                     "measurements": []
                 }
             ]
         }
 
-        for param in ["temperature", "humidity"]:
+        for param in ["temperature", "humidity", "pressure"]:
             if param in input_json:
                 unit_key = f"{param}_unit"
                 normalized_measurement = {
@@ -157,6 +157,10 @@ def senso_normalise_json(input_json):
                 }
                 if param == "temperature":
                     normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_temp_unit(
+                        normalized_measurement["value"], normalized_measurement["unit"]
+                    )
+                elif param == "pressure":
+                    normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_pressure_unit(
                         normalized_measurement["value"], normalized_measurement["unit"]
                     )
                 normalized_data["deviceList"][0]["measurements"].append(normalized_measurement)
