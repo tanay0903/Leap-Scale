@@ -3,11 +3,11 @@ a ------------------------------------------------------------------------- solv
   "man": "TAS Industries PVT LTD",
   "d_list": {
     "device_1": {
-      "dId": "IN03091229",
+      "dId": "T_U1",
       "dType": "T10",
       "mod": "Auto",
-      "time": 2025-03-25 05:21:14,
-      "create_t": 2025-03-25 05:21:14,
+      "time": 1742384009000,
+      "create_t": 1742384009000,
       "state": "Okay",
       "measurements": {
         "attris": [
@@ -31,11 +31,11 @@ b ------------------------------------------------------------------------- solv
   "man": "TAS Industries PVT LTD",
   "d_list": [
     {
-      "dId": "IN03091229",
+      "dId": "T_U1",
       "dType": "T10",
       "mod": "Auto",
-      "time": 2025-03-25 05:21:14,
-      "create_t": 2025-03-25 05:21:14,
+      "time": 1742384009000,
+      "create_t": 1742384009000,
       "state": "Okay",
       "measurements": {
         "1": {
@@ -77,11 +77,11 @@ c ------------------------------------------------------------------------- solv
   "man": "TAS Industries PVT LTD",
   "d_list": {
     "device_1": {
-      "dId": "IN03091229",
+      "dId": "T_U1",
       "dType": "T10",
       "mod": "Auto",
-      "time": 2025-03-25 05:21:14,
-      "create_t": 2025-03-25 05:21:14,
+      "time": 1742384009000,
+      "create_t": 1742384009000,
       "state": "Okay",
       "measurements": {
         "measurement_1": {
@@ -125,9 +125,9 @@ d ------------------------------------------------------------------------- solv
       "dType": "T10",
       "state_dev": "Okay",
       "md": "Auto",
-      "create_t": "2025-03-25 05:21:14",
-      "time": "2025-03-25 05:21:14",
-      "id": "IN03091229",
+      "create_t": "1741861908497",
+      "time": "",
+      "id": "T_U1",
       "metric": [
         {
           "CONVERTER": 1,
@@ -153,8 +153,8 @@ e  ------------------------------------------------------------------------- sol
     "createdTime": "2025-03-25 05:21:14",
     "multiplier": 1,
     "time": "2025-03-25 05:21:14",
-    "manufacturer": "TAS Industries PVT LTD",
-    "device_id": "IN03091229",
+    "manufacturer": "Interns Leap&Scale",
+    "device_id": "IN03091228",
     "device_type": "IN_005",
     "temperature": 31.100000381469727,
     "temperature_unit": "Celsius",
@@ -166,11 +166,11 @@ f ------------------------------------------------------------------------- solv
   "man": "TAS Industries PVT LTD",
   "dList": [
     {
-      "dId": "IN03091229",
+      "dId": "T_U1",
       "dType": "T10",
       "mod": "Auto",
-      "ts": 2025-03-25 05:21:14,
-      "createdT": 2025-03-25 05:21:14,
+      "ts": 1739941485016,
+      "createdT": 1739941485016,
       "state": "Okay",
       "readings": [
         {
@@ -191,14 +191,14 @@ f ------------------------------------------------------------------------- solv
 }
 g ------------------------------------------------------------------------- solved
 {
-  "mfg": "TAS Industries PVT LTD",
+  "mfg": "Interns Leap&Scale",
   "deviceList": [
     {
-      "deviceId": "IN03091229",
+      "deviceId": "IN03091228",
       "deviceType": "IN_005",
       "mode": "Auto",
-      "timestamp": 2025-03-25 05:21:14,
-      "createdTime": 2025-03-25 05:21:14,
+      "timestamp": 1742860274000,
+      "createdTime": 1742860274000,
       "status": "Okay",
       "measurements": [
         {
@@ -217,4 +217,3 @@ g ------------------------------------------------------------------------- solv
     }
   ]
 }
-

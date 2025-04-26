@@ -1,7 +1,7 @@
 import os
 import json
 import paho.mqtt.client as mqtt
-from senso_data_norm_main import senso_normalise_json
+from app.senso_data_norm_main import senso_normalise_json
 import requests
 from dotenv import load_dotenv
 import logging
@@ -28,8 +28,8 @@ USERNAME = os.getenv("MQTT_USERNAME")
 PASSWORD = os.getenv("MQTT_PASSWORD")
 TOPIC = os.getenv("MQTT_TOPIC", "iot/sensor/data")
 
-TARGET_URL = os.getenv("TARGET_URL", "https://ronny.iotclay.net/DataCollection/test")
-#TARGET_URL = os.getenv("TARGET_URL", "https://sparrow.sensoyo.io/DataCollection/test")
+# TARGET_URL = os.getenv("TARGET_URL", "https://ronny.iotclay.net/DataCollection/test")
+TARGET_URL = os.getenv("TARGET_URL", "https://sparrow.sensoyo.io/DataCollection/test")
 
 
 def on_connect(client, userdata, flags, rc):
@@ -82,19 +82,16 @@ def send_data_to_api(data):
     except requests.exceptions.RequestException as e:
         logging.error(f"Error sending data to API: {e}")
 
-
-if __name__ == "__main__":
+def start_mqtt():
+    global client
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
     client = mqtt.Client()
     client.username_pw_set(USERNAME, PASSWORD)
     client.on_connect = on_connect
     client.on_message = on_message
 
-    logging.info(f"Connecting to MQTT Broker: {BROKER_HOST}")
     try:
         client.connect(BROKER_HOST, PORT, keepalive=120)
-        client.loop_forever()
-    except KeyboardInterrupt:
-        logging.info("Exiting gracefully...")
+        client.loop_start()  # Non-blocking (important for Flask)
     except Exception as e:
-        logging.error(f"An error occurred: {e}")
-
+        logging.error(f"MQTT startup error: {e}")

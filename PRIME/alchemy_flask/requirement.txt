@@ -1,0 +1,7 @@
+Flask
+paho-mqtt
+requests
+python-dotenv
+rapidfuzz
+pytz
+waitress

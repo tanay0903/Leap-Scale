@@ -53,7 +53,7 @@ schema = {
                                 "multiplier": {"type": "number", "minimum": 1},
                                 "unit": {"type": "string", "minLength": 1}
                             },
-                            "required": ["paramName", "value", "multiplier", "unit"]
+                            "required": ["paramName", "value"] #, "multiplier", "unit"
                         }
                     }
                 },
