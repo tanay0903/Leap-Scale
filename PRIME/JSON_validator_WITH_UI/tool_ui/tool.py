@@ -56,7 +56,7 @@ schema = {
                             "required": ["paramName", "value"] #, "multiplier", "unit"
                         }
                     }
-                },
+                },  
                 "required": ["deviceId", "deviceType", "mode", "timestamp", "createdTime", "status", "measurements"]
             }
         }
@@ -144,7 +144,7 @@ def validateData(data, json_str):
 
     timestamp_errors = validate_timestamp(data, json_str) if not any("timestamp" in e for e in schema_errors) else []
     mfg_location_errors = validate_mfg_location(data, json_str)
-     
+    
     all_errors = list(key_errors) + list(schema_errors) + list(timestamp_errors) + list(mfg_location_errors)
     return "\n".join(all_errors) if all_errors else "JSON is valid."
 

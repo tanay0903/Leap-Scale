@@ -1,6 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import json
 from tool import validateData
+import time
+import threading
+import os 
+import signal
 
 app = Flask(__name__)
 
@@ -18,5 +22,12 @@ def validate():
     except Exception as e:
         return jsonify({"result": f"Error: {str(e)}"})
 
+# 🔁 Background thread to simulate crash
+def simulate_crash():
+    time.sleep(20)
+    print("⚠️ Simulated crash triggered.")
+    os.kill(os.getpid(), signal.SIGINT)
+
 if __name__ == '__main__':
-    app.run(host="192.168.0.109", port=5000, debug=True)
+    threading.Thread(target=simulate_crash).start()
+    app.run(debug=True,  use_reloader=False)

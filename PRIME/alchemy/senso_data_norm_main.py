@@ -146,24 +146,42 @@ def senso_normalise_json(input_json):
             ]
         }
 
-        for param in ["temperature", "humidity", "pressure"]:
-            if param in input_json:
-                unit_key = f"{param}_unit"
-                normalized_measurement = {
-                    "paramName": param.capitalize(),
-                    "value": round(float(input_json[param]), 2),
-                    "multiplier": input_json.get("multiplier", 1),
-                    "unit": input_json.get(unit_key, "unknown")
-                }
-                if param == "temperature":
-                    normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_temp_unit(
-                        normalized_measurement["value"], normalized_measurement["unit"]
-                    )
-                elif param == "pressure":
-                    normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_pressure_unit(
-                        normalized_measurement["value"], normalized_measurement["unit"]
-                    )
-                normalized_data["deviceList"][0]["measurements"].append(normalized_measurement)
+        measurement_keys = [
+            key for key in input_json.keys()
+            if key not in ["manufacturer", "device_id", "device_type", "mode", "time", "createdTime", "status", "multiplier"]
+            and not key.endswith("_unit")
+        ]
+
+        for key in measurement_keys:
+            value = input_json.get(key)
+            unit_key = f"{key}_unit"
+            unit = input_json.get(unit_key, "unknown")
+            multiplier = input_json.get("multiplier", 1)
+
+            try:
+                value = round(float(value), 2)
+            except (ValueError, TypeError):
+                continue  # Skip if it's not numeric
+
+            param_name = key.replace("_", " ").strip().title()
+
+            normalized_measurement = {
+                "paramName": param_name,
+                "value": value,
+                "multiplier": multiplier,
+                "unit": unit
+            }
+
+            if param_name.lower() == "temperature":
+                normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_temp_unit(
+                    normalized_measurement["value"], normalized_measurement["unit"]
+                )
+            elif param_name.lower() == "pressure":
+                normalized_measurement["value"], normalized_measurement["unit"] = senso_convert_pressure_unit(
+                    normalized_measurement["value"], normalized_measurement["unit"]
+                )
+
+            normalized_data["deviceList"][0]["measurements"].append(normalized_measurement)
 
         return normalized_data
 
