@@ -39,26 +39,26 @@ def validate():
     except Exception as e:
         return jsonify({"result": f"Error: {str(e)}"})
 
-# === Simulate Crash after N seconds ===
-def simulate_crash():
-    time.sleep(120) 
-    print("⚠️ Simulated crash triggered.")
-    os.kill(os.getpid(), signal.SIGINT)
+# # === Simulate Crash after N seconds ===
+# def simulate_crash():
+#     time.sleep(120) 
+#     print("⚠️ Simulated crash triggered.")
+#     os.kill(os.getpid(), signal.SIGINT)
 
-# === Logging and Email ===
-def send_email(message_body):
-    msg = MIMEText(message_body)
-    msg['Subject'] = EMAIL_SUBJECT
-    msg['From'] = EMAIL_SENDER
-    msg['To'] = EMAIL_RECEIVER
+# # === Logging and Email ===
+# def send_email(message_body):
+#     msg = MIMEText(message_body)
+#     msg['Subject'] = EMAIL_SUBJECT
+#     msg['From'] = EMAIL_SENDER
+#     msg['To'] = EMAIL_RECEIVER
 
-    try:
-        with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
-            smtp.login(EMAIL_SENDER, EMAIL_APP_PASSWORD)
-            smtp.send_message(msg)
-        print("✅ Crash email sent.")
-    except Exception as e:
-        print(f"❌ Failed to send email: {e}")
+#     try:
+#         with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+#             smtp.login(EMAIL_SENDER, EMAIL_APP_PASSWORD)
+#             smtp.send_message(msg)
+#         print("✅ Crash email sent.")
+#     except Exception as e:
+#         print(f"❌ Failed to send email: {e}")
 
 def log_crash(message):
     with open(LOG_FILE, 'a') as log:
@@ -126,7 +126,7 @@ def run_flask_child():
     signal.signal(signal.SIGINT, handle_sigint)
 
     # Start simulated crash thread
-    threading.Thread(target=simulate_crash, daemon=True).start()
+    #threading.Thread(target=simulate_crash, daemon=True).start()
     app.run(debug=True, use_reloader=False)
 
 # === Main Entry ===
